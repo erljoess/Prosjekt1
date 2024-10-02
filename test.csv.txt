@@ -6,3 +6,6 @@ Dato og tid;Tid siden start (sek);Trykk - barometer (bar);Trykk - absolutt trykk
 06.11.2021 14:23;40;;100,461;17,08
 06.11.2021 14:23;50;;100,445;17,09
 06.11.2021 14:24;60;101,04;100,465;17,12
+am
+pm
+Sola
