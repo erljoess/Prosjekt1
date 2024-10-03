@@ -8,7 +8,8 @@ Created on Wed Oct  2 11:48:38 2024
 import datetime
 import csv
 data = []
-with open("test_data.txt","r") as sola_press:
+with open("met.csv.txt","r") as sola_press:
+    next
     for line in sola_press:
         #Split data into different components
         values_sola = line.split(";")
