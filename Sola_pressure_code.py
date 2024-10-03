@@ -9,7 +9,7 @@ import datetime
 import csv
 data = []
 with open("met.csv.txt","r") as sola_press:
-    next
+    next(sola_press)
     for line in sola_press:
         #Split data into different components
         values_sola = line.split(";")

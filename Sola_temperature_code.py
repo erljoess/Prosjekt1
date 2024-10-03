@@ -9,7 +9,8 @@ Created on Wed Oct  2 12:38:14 2024
 import datetime
 import csv
 data = []
-with open("test_data.txt","r") as sola_temp:
+with open("met.csv.txt","r") as sola_temp:
+    next(sola_temp)
     for line in sola_temp:
         #Split data into different components
         values_sola = line.split(";")

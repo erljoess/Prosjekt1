@@ -1,5 +1,0 @@
-Dato og tid;Tid siden start (sek);Trykk - barometer (bar);Trykk - absolutt trykk maaler (bar);Temperatur (gr Celsius)
-06/13/2021 11:59:48 am;164200;;101,713;19,76
-06/13/2021 11:59:58 am;164210;;101,72;19,93
-06/13/2021 12:00:08 pm;164220;102,3;101,678;20,26
-06/13/2021 12:00:18 pm;164230;;101,696;20,3
