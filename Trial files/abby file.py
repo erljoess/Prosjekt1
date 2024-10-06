@@ -32,10 +32,10 @@ import numpy as np
 def plot_temperature():
     
     plt.plot(temp_data_time, color='blue', label='Temperature')
-    plt.plot(......., color='red', label='Average Temperature')
+#    plt.plot(......., color='red', label='Average Temperature')
     plt.plot(temp_data_met, color='green', label='Temperature Met')
     plt.plot(sunset_sunrise, color='black', label='Temperature drop from sunset til sunrise')
-    plt.plot(..........., color='red', label='Temperature drop from max til min')
+ #   plt.plot(..........., color='red', label='Temperature drop from max til min')
     
     
     plt.xlabel('Dates')

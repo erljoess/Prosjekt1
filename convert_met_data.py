@@ -7,41 +7,36 @@ Created on Tue Oct  1 22:18:20 2024
 Time_data = []
 Sola_data = []
 
-def convert_Sola_data():
+def convert_Sola_data(Sola_data):
     with open("met.csv.txt", "r") as fila:
         next(fila)
         data = fila.read()
         for linje in data.split("\n"):
             delt_linje = linje.split(";")
             if delt_linje[0] == "Sola":
- #               print(delt_linje)
                 date_time = delt_linje[2].split(" ")
-  #              print(date_time)
                 date = date_time[0].split(".")
                 time = date_time[1].split(":")
-   #             print(date)
-    #            print(time)
                 yyyy = int(date[2])
                 mo = int(date[1])
                 dd = int(date[0])
                 hh = int(time[0])
-                mi = int(time[1])
-#                print(f"{yyyy:04d}-{mo:02d}-{dd:02d} {hh:02d}:{mi:02d}")
+                mi = 0
                 bar_p = (delt_linje[4].replace(",", "."))
+                bar_p = float(bar_p)
                 temp = (delt_linje[3].replace(",", "."))
                 temp = float(temp)
                 Sola_data.append([yyyy,mo,dd,hh,mi,bar_p,temp])
         else:
             next
-#    return Sola_data
+    return Sola_data
 
-def convert_Time_data():
+def convert_Time_data(Time_data):
     with open("time.csv.txt", "r") as fila:
         next(fila)
         for linje in fila:
             delt_linje = linje.strip().split(";")
             date_time = delt_linje[0].split(" ")
-#            print(date_time)
             if len(date_time) == 2:
                 date = date_time[0].split(".")
                 time = date_time[1].split(":")
@@ -49,29 +44,22 @@ def convert_Time_data():
             elif len(date_time) == 3:
                 date = date_time[0].split("/")
                 time = date_time[1].split(":")
-#                print(date)
-#                print(time)
                 if date_time[2] == "am":
                     hh = int(time[0])
                     if hh == 12:
                         hh = 0
-#                    print(hh)
                 elif date_time[2] == "pm":
                     hh = int(time[0])
                     if hh != 12:
                         hh += 12
-                    #print(hh)
-#                print(hh)
             else:
                 continue
-#            print(delt_linje)
 
             yyyy = int(date[2])
             mo = int(date[0])
             dd = int(date[1])
             mi = int(time[1])
             ss = int(delt_linje[1]) % 60
-#            print(f"{yyyy:04d}-{mo:02d}-{dd:02d} {hh:02d}:{mi:02d}:{ss:02d}")
             bar_p = (delt_linje[2].replace(",", "."))
             if bar_p != "":
                 bar_p = "{:.2f}".format(10 * float(bar_p))
@@ -83,10 +71,11 @@ def convert_Time_data():
             act_p = float(act_p)
             temp = (delt_linje[4].replace(",", "."))
             temp = float(temp)
-#            print(f"{yyyy:04d}-{mo:02d}-{dd:02d} {hh:02d}:{mi:02d}:{ss:02d} {bar_p} {act_p} {temp}")
             Time_data.append([yyyy,mo,dd,hh,mi,ss,bar_p,act_p,temp])
+    return Time_data
 
-convert_Time_data()
-print(Time_data)
-convert_Sola_data()
-#print(Sola_data)
+#convert_Time_data(Time_data)
+#print(Time_data[:3])
+#convert_Sola_data(Sola_data)
+#print(Sola_data[:3])
+

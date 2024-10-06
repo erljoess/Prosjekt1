@@ -7,7 +7,7 @@ Created on Tue Oct  1 22:18:20 2024
 Time_data = []
 Sola_data = []
 
-def convert_Sola_data():
+def convert_Sola_data(Sola_data):
     with open("met.csv.txt", "r") as fila:
         next(fila)
         data = fila.read()
@@ -21,7 +21,7 @@ def convert_Sola_data():
                 mo = int(date[1])
                 dd = int(date[0])
                 hh = int(time[0])
-                mi = int(time[1])
+                mi = 0
                 bar_p = (delt_linje[4].replace(",", "."))
                 bar_p = float(bar_p)
                 temp = (delt_linje[3].replace(",", "."))
@@ -29,8 +29,9 @@ def convert_Sola_data():
                 Sola_data.append([yyyy,mo,dd,hh,mi,bar_p,temp])
         else:
             next
+    return Sola_data
 
-def convert_Time_data():
+def convert_Time_data(Time_data):
     with open("time.csv.txt", "r") as fila:
         next(fila)
         for linje in fila:
@@ -71,9 +72,10 @@ def convert_Time_data():
             temp = (delt_linje[4].replace(",", "."))
             temp = float(temp)
             Time_data.append([yyyy,mo,dd,hh,mi,ss,bar_p,act_p,temp])
+    return Time_data
 
-convert_Time_data()
-print(Time_data)
-convert_Sola_data()
-#print(Sola_data)
+#convert_Time_data(Time_data)
+#print(Time_data[:3])
+#convert_Sola_data(Sola_data)
+#print(Sola_data[:3])
 

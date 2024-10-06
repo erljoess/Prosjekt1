@@ -1,0 +1,42 @@
+Time_temp:  [[2021, 6, 11, 14, 23, 0, 17.18], [2021, 6, 11, 14, 23, 10, 17.1], [2021, 6, 11, 14, 23, 20, 17.08]]
+Time_coldest:  [[0, 0, 0, 0, 0, 0, 50], [2021, 6, 11, 23, 59, 50, 12.26], [2021, 6, 12, 3, 5, 0, 9.99]]
+Time_warmest:  [[0, 0, 0, 0, 0, 0, -50], [2021, 6, 11, 17, 31, 20, 19.39], [2021, 6, 12, 11, 20, 10, 23.15]]
+Sola_temp:  [[2021, 6, 11, 1, 16.1], [2021, 6, 11, 2, 16.0], [2021, 6, 11, 3, 16.0]]
+Sola_coldest:  [[0, 0, 0, 0, 50], [2021, 6, 11, 23, 12.4], [2021, 6, 12, 20, 11.5]]
+Sola_warmest:  [[0, 0, 0, 0, -50], [2021, 6, 11, 11, 17.0], [2021, 6, 12, 12, 14.4]]
+Time_act:  [[2021, 6, 11, 14, 23, 0, 1004.52], [2021, 6, 11, 14, 23, 10, 1004.78], [2021, 6, 11, 14, 23, 20, 1004.67]]
+Time_bar:  [[2021, 6, 11, 14, 23, 0, 1010.3], [2021, 6, 11, 14, 24, 0, 1010.4], [2021, 6, 11, 14, 25, 0, 1010.5]]
+Sola_bar:  [[2021, 6, 11, 1, 1013.7], [2021, 6, 11, 2, 1013.1], [2021, 6, 11, 3, 1012.9]]
+
+
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import datetime
+
+# Trekk ut tid og temperatur
+Time_tider = [f"{d[1]:02d}-{d[2]:02d} {d[3]:02d}:{d[4]:02d}" for d in Time_temp]
+Time_temps = [d[6] for d in Time_temp]
+Sola_tider = [f"{d[1]:02d}-{d[2]:02d} {d[3]:02d}" for d in Sola_temp]
+Sola_temps = [d[4] for d in Sola_temp]
+
+# Konverter tid til datetime-objekter
+Time_tider = [datetime.datetime(d[0], d[1], d[2], d[3], d[4]) for d in Time_temp]
+Sola_tider = [datetime.datetime(d[0], d[1], d[2], d[3]) for d in Sola_temp]
+# Opprett figuren og aksen
+fig, ax = plt.subplots(figsize=(10, 6))
+
+# Plot dataene
+ax.plot(Time_tider, Time_temps, color="blue", label="Temperatur (Time)")
+ax.plot(Sola_tider, Sola_temps, color="green", label="Temperatur (MET)")
+# Formater x-aksen
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m %H:%M'))
+plt.xticks(rotation=45)
+
+# Sett tittel, aksetitler og legend
+ax.set_title('Temperatur over tid')
+ax.set_xlabel('Tid (DD-MM HH:MM)')
+ax.set_ylabel('Temperatur (°C)')
+ax.legend()
+
+# Vis plottet
+plt.show()
