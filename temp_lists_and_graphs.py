@@ -5,39 +5,21 @@ Created on Fri Oct  4 09:19:28 2024
 
 @author: abayomibuys and erljoess
 """
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-import datetime
 
 import convert_met_data as cmd                                      # Hentar inn funksjonane frå convert_met_data.py og kallar på dei med cmd.
 
 Sola_data = []
-Sola_data = cmd.convert_Sola_data(Sola_data)                        # Hentar inn data til xxxx_data[] med cmd.convert_xxxx_data(xxxx_data).
-
-    #LAGAR LISTER FOR SOLA FOR 
-Sola_bar = []
-Sola_temp = []
-
-for linje in Sola_data:                                      
-    Sola_bar.append([linje[0], linje[1], linje[2], linje[3], linje[4], linje[5]])   # Legg til yyyy mo dd tt og bar til Sola_bar[].
-    Sola_temp.append([linje[0], linje[1], linje[2], linje[3], linje[4], linje[6]])   # Legg til yyyy mo dd tt og temp til Sola_temp[].
+Sola_data = cmd.convert_Sola_data(Sola_data)                        # Hentar inn data til Sola_data[].
 
 Time_data = []
-Time_data = cmd.convert_Time_data(Time_data)
+Time_data = cmd.convert_Time_data(Time_data)                        # Hentar inn data til Time_data[].
 
-Time_bar = []
-Time_act = []
-Time_temp = []
 Time_temp_min = [00,00,00,00,00,00,50]
 Time_temp_max = [00,00,00,00,00,00,-50]
 Time_coldest = []
 Time_warmest = []
 
-for linje in Time_data:                                      
-    Time_act.append([linje[0], linje[1], linje[2], linje [3], linje[4], linje[5], linje[7]])   # Legg til yyyy mo dd tt og act til Time_act[].
-    Time_temp.append([linje[0], linje[1], linje[2], linje [3], linje[4], linje[5], linje[8]])   # Legg til yyyy mo dd tt og temp til Time_temp[].
-    if linje[6] != -1:
-        Time_bar.append([linje[0], linje[1], linje[2], linje [3], linje[4], linje[5], linje[6]])   # Legg til yyyy mo dd tt og bar til Time_bar[].
+for linje in Time_data:
     if Time_temp_min[2] != linje[2]:
         Time_coldest.append(Time_temp_min)                         # Legg til Time_temp_min i Time_coldest[], altså det kaldaste i Time_temp[] siste døgn.
         Time_warmest.append(Time_temp_max)                         # Legg til Time_temp_max i Time_warmest[], altså det varmaste i Time_temp[] siste døgn.
@@ -48,7 +30,7 @@ for linje in Time_data:
     if Time_temp_max[6] < linje[8]:                                     #Viss registrert temperatur er høgare enn Time_temp_max, oppdater Time_temp_max.
         Time_temp_max = [linje[0], linje[1], linje[2], linje [3], linje[4], linje[5], linje[8]]
 
-    #Lagar ein loop for å etablere ei liste med tid og temperatur for den høgaste og lågaste temperaturen i Time_temp[] og Sola_temp[]:
+    #Lagar ein loop for å etablere ei liste med tid og temperatur for den høgaste og lågaste temperaturen i Time_temp[]:
 Time_temp_drop = []
 
 for i in range((len(Time_warmest))*2-1):
@@ -57,20 +39,7 @@ for i in range((len(Time_warmest))*2-1):
     elif i %2 == 1:
         Time_temp_drop.append(Time_coldest[(int((i+1)/2))])
 Time_coldest = None
-Time_warmest = None
-
-    #Lagar ei løkke for å berekne gjennomsnittstemperaturen for dei siste 5 minutta (30 linjer) i Time_act[]:
-Time_act_total = []
-Time_act_snitt = []
-
-for i, linje in enumerate(Time_data):           #Går gjennom kvar linje i Time_data, og bereknar snitt av dei siste 5 minutta (30 linjer).
-    Time_act_total.append(float(linje[7]))
-    if linje[6] != -1:
-        while len(Time_act_total) > 30:         #For å få rett lengde på gjennomsnitts-berekninga:
-            Time_act_total.pop(0)               #Fjernar det eldste elementet i Time_act_total[].
-        if i >= 29:                             #Startar berekninga av gjennomsnittet etter 30 linjer.
-            Time_act_snitt.append([linje[0], linje[1], linje[2], linje[3], linje[4], linje[5], float(f"{sum(Time_act_total)/30:.2f}")])
-Time_act_total = None #Fjernar Time_act_total[] frå minnet.
+Time_warmest = None #Fjernar desse frå listene.
 
     #Lagar ei løkke for å berekne gjennomsnittstemperaturen for dei siste 5 minutta i Time_temp[]:
 Time_temp_total = []
@@ -86,32 +55,29 @@ for i, linje in enumerate(Time_data):           #Går gjennom kvar linje i Time_
 Time_temp_total = None #Fjernar Time_temp_total[] frå minnet.
 
     # Startar arbeidet med plotting:
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates                # For formatering av dato-data.
+import datetime
+
     # Hentar ut tid og temperatur frå listene:
-Time_temp_tider = [f"{d[1]:02d}-{d[2]:02d} {d[3]:02d}:{d[4]:02d}" for d in Time_temp]
-print(Time_temp_tider[:10])
-Time_tider = [f"{d[1]:02d}-{d[2]:02d} {d[3]:02d}:{d[4]:02d}" for d in Time_data]
-print(Time_tider[:10])
-Time_temps = [d[6] for d in Time_temp]
-Time_temp_avg_tider = [f"{d[1]:02d}-{d[2]:02d} {d[3]:02d}:{d[4]:02d}" for d in Time_temp_snitt]
-Time_temp_avg = [d[6] for d in Time_temp_snitt]
-Time_temp_drop_tider = [f"{d[1]:02d}-{d[2]:02d} {d[3]:02d}:{d[4]:02d}" for d in Time_temp_drop]
-Time_temp_drop_tider = Time_temp_drop_tider[2:4]
-Time_temp_drop = Time_temp_drop[2:4]    
-Sola_tider = [f"{d[1]:2d}-{d[2]:2d} {d[3]:2d} {d[4]:2d}" for d in Sola_temp]
-Sola_temps = [d[5] for d in Sola_temp]
+ 
+Sola_tider = [datetime.datetime(d[0], d[1], d[2], d[3], d[4]) for d in Sola_data]
+Sola_temps = [d[6] for d in Sola_data]
         # Konverterer tid til datetime-objekt
-Time_temp_tider = [datetime.datetime(d[0], d[1], d[2], d[3], d[4]) for d in Time_temp]
+Time_tider = [datetime.datetime(d[0], d[1], d[2], d[3], d[4]) for d in Time_data]
+Time_temps = [d[8] for d in Time_data]
+Time_temp_avg = [d[6] for d in Time_temp_snitt]  
 Time_temp_avg_tider = [datetime.datetime(d[0], d[1], d[2], d[3], d[4]) for d in Time_temp_snitt]
+Time_temp_drop = Time_temp_drop[2:4] 
 Time_temp_drop_tider = [datetime.datetime(d[0], d[1], d[2], d[3], d[4]) for d in Time_temp_drop]
 Time_temp_drop = [d[6] for d in Time_temp_drop]
-Sola_tider = [datetime.datetime(d[0], d[1], d[2], d[3], d[4]) for d in Sola_temp]
 
         #Lagar ein funksjon for å plotte temperaturdata:
 def plot_temperature():
         # Opprettar bildet og aksen
     fig, ax = plt.subplots(figsize=(14, 4))
         # Plottar dataene
-    ax.plot(Time_temp_tider, Time_temps, color="blue", label="Temperature (Time)")
+    ax.plot(Time_tider, Time_temps, color="blue", label="Temperature (Time)")
     ax.plot(Time_temp_avg_tider, Time_temp_avg, color="orange", linewidth=0.5, label="Average temperature (Time)")
     ax.plot(Sola_tider, Sola_temps, color="green", label="Temperature (MET)")
     ax.plot(Time_temp_drop_tider, Time_temp_drop, color="violet", label='Temperature drop from max til min')
@@ -127,20 +93,3 @@ def plot_temperature():
     plt.show()
 
 plot_temperature() #Kallar på funksjonen for å plotte temperaturdata.
-
-
-#    plt.plot(sunset_sunrise, color='black', label='Temperature drop from sunset til sunrise') #Har ikkje henta data til dette.
-   
-#def plot_pressure():
-    
-#    plt.plot(act_data_time, color='blue', label='Absolute Pressure')
-#    plt.plot(bar_data_time, color='red', label='Barometer pressure')
-#    plt.plot(bar_data_met, color='green', label='Absolute pressure Met')
-    
-    
-#    plt.xlabel('Dates')
-#    plt.ylabel('Pressure')
-#    plt.title('Pressure/Date graph')
-#    plt.legend()
-
-#    plt.show()
